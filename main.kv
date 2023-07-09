@@ -1,0 +1,54 @@
+# En este archivo le agregamos todas las cosas lokis que querramos
+<ProductosCRUD>:
+    orientation: "vertical"
+    BoxLayout:
+        orientation: "horizontal"
+        Label:
+            text: "ID:"
+        TextInput:
+            id: txt_id
+    BoxLayout:
+        orientation: "horizontal"
+        Label:
+            text: "Nombre:"
+        TextInput:
+            id: txt_nombre
+    BoxLayout:
+        orientation: "horizontal"
+        Label:
+            text: "Descripción:"
+        TextInput:
+            id: txt_desc
+    BoxLayout:
+        orientation: "horizontal"
+        Label:
+            text: "Precio:"
+        TextInput:
+            id: txt_precio
+    BoxLayout:
+        orientation: "horizontal"
+        Label:
+            text: "Stock:"
+        TextInput:
+            id: txt_stock
+    Button:
+        text: "Agregar"
+        on_release: root.agregar_producto()
+    Button:
+        text: "Buscar"
+        on_release: root.buscar_producto()
+    Button:
+        text: "Actualizar"
+        on_release: root.actualizar_producto()
+    Button:
+        text: "Borrar"
+        on_release: root.borrar_producto()
+    ScrollView:
+        size_hint: 1, 0.7
+        GridLayout:
+            id: grid_productos
+            cols: 5
+            size_hint_y: None
+            height: self.minimum_height
+    Label:
+        id: lbl_mensaje
