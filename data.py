@@ -8,7 +8,7 @@ class Data():
 
     def crear_tabla_producto(self):
         c = self.con.cursor()
-        c.execute("""CREATE TABLE IF NOT EXISTS porductos(
+        c.execute("""CREATE TABLE IF NOT EXISTS productos(
                     id_producto INTEGER,
                     nombre VARCHAR NOT NULL,
                     descripcion VARCHAR NOT NULL,
@@ -22,7 +22,7 @@ class Data():
         self.con.commit()
         return c.lastrowid
 
-    def buscar_producto_id(self, prod_id):
+    def buscar_producto(self, prod_id):
         c = self.con.cursor()
         c.execute("SELECT * FROM productos WHERE id_producto = ?", (prod_id,))
         producto = c.fetchone()
@@ -30,12 +30,21 @@ class Data():
 
     def borrar_producto(self, prod_id):
         c = self.con.cursor()
-        c.execute("DELETE FORM productos WHERE id_producto = ?", (prod_id,))
+        c.execute("DELETE FROM productos WHERE id_producto = ?", (prod_id,))
         self.con.commit()
         return c.rowcount
 
-    def actualizar_prod(self, prod_id, nombre, desc, precio, stock):
+    def actualizar_producto(self, prod_id, nombre, desc, precio, stock):
         c = self.con.cursor()
+        c.execute("UPDATE productos SET nombre=?, descripcion=?, precio=?, stock=? WHERE id_producto = ?",(nombre, desc, precio, stock, prod_id))
+        self.con.commit()
+        return c.rowcount
+
+    def obtener_productos(self):
+        c = self.con.cursor()
+        c.execute("SELECT * FROM productos")
+        productos = c.fetchall()
+        return productos
         c.execute("UPDATE productos SET nombre=?, descripcion=?, precio=?, stock=? WHERE id_producto = ?",(nombre, desc, precio, stock, prod_id))
         self.con.commit()
         return c.rowcount
