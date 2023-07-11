@@ -31,24 +31,19 @@
             text: "Stock:"
         TextInput:
             id: txt_stock
-    Button:
-        text: "Agregar"
-        on_release: root.agregar_producto()
-    Button:
-        text: "Buscar"
-        on_release: root.buscar_producto()
-    Button:
-        text: "Actualizar"
-        on_release: root.actualizar_producto()
-    Button:
-        text: "Borrar"
-        on_release: root.borrar_producto()
-    ScrollView:
-        size_hint: 1, 0.7
-        GridLayout:
-            id: grid_productos
-            cols: 5
-            size_hint_y: None
-            height: self.minimum_height
+    BoxLayout:
+        orientation: "horizontal"
+        Button:
+            text: "Agregar"
+            on_release: root.agregar_producto()
+        Button:
+            text: "Buscar"
+            on_release: root.buscar_producto()
+        Button:
+            text: "Actualizar"
+            on_release: root.actualizar_producto()
+        Button:
+            text: "Borrar"
+            on_release: root.borrar_producto()
     Label:
         id: lbl_mensaje
