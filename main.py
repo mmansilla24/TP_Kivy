@@ -45,10 +45,6 @@ class Contenedor_01(BoxLayout): # Solo crea una ventana (widget) contenedora de 
         self.contenedor = BoxLayout(orientation="vertical", spacing=10, size_hint=(None, None))
         self.contenedor.bind(minimum_height=self.contenedor.setter('height'))
 
-        # Scrollview para la lista de productos
-        self.scrollview = ScrollView(size_hint=(1, 0.7), do_scroll_x=False)
-        self.scrollview.add_widget(self.contenedor)
-
         # Agregar los widgets a la interfaz
         self.add_widget(self.lbl_id)
         self.add_widget(self.txt_id)
@@ -64,23 +60,8 @@ class Contenedor_01(BoxLayout): # Solo crea una ventana (widget) contenedora de 
         self.add_widget(self.btn_buscar)
         self.add_widget(self.btn_actualizar)
         self.add_widget(self.btn_borrar)
-        self.add_widget(self.scrollview)
         self.add_widget(self.lbl_mensaje)
 
-        # Cargar la lista de productos al iniciar
-        self.cargar_productos()
-
-    def cargar_productos(self):
-        self.contenedor.clear_widgets()
-        productos = self.data.obtener_productos()
-        for producto in productos:
-            item = BoxLayout(orientation="horizontal", spacing=10, size_hint=(1, None), height=30)
-            item.add_widget(Label(text=str(producto[0])))
-            item.add_widget(Label(text=producto[1]))
-            item.add_widget(Label(text=producto[2]))
-            item.add_widget(Label(text=str(producto[3])))
-            item.add_widget(Label(text=str(producto[4])))
-            self.contenedor.add_widget(item)
 
     def agregar_producto(self, *args):
         nombre = self.txt_nombre.text
@@ -90,7 +71,6 @@ class Contenedor_01(BoxLayout): # Solo crea una ventana (widget) contenedora de 
 
         if nombre and desc and precio and stock:
             self.data.agregar_producto(nombre, desc, precio, stock)
-            self.cargar_productos()
             self.lbl_mensaje.text = "Producto agregado exitosamente."
         else:
             self.mostrar_mensaje_error("Todos los campos son requeridos.")
@@ -124,7 +104,6 @@ class Contenedor_01(BoxLayout): # Solo crea una ventana (widget) contenedora de 
 
         if id_producto and nombre and desc and precio and stock:
             self.data.actualizar_producto(id_producto, nombre, desc, precio, stock)
-            self.cargar_productos()
             self.lbl_mensaje.text = "Producto actualizado exitosamente."
         else:
             self.mostrar_mensaje_error("Todos los campos son requeridos.")
@@ -134,16 +113,67 @@ class Contenedor_01(BoxLayout): # Solo crea una ventana (widget) contenedora de 
 
         if id_producto:
             self.data.borrar_producto(id_producto)
-            self.cargar_productos()
             self.lbl_mensaje.text = "Producto borrado exitosamente."
         else:
             self.mostrar_mensaje_error("Debes ingresar un ID de producto válido.")
 
 
-class MainApp(App): #Esta tiene que tener el mismo nombre que el archivo .kv
-    title = 'TP kivy'
-    def build(self): # Obligatoria agregarla, pq es lo primero que va a buscar
-        return Contenedor_01()
+
+class ListaProductos(BoxLayout):
+    def __init__(self, **kwargs):
+        super(ListaProductos, self).__init__(**kwargs)
+        self.orientation = "vertical"
+        self.data = Data()
+
+        # Contenedor principal
+        self.contenedor = BoxLayout(orientation="vertical", spacing=10, size_hint=(None, None))
+        self.contenedor.bind(minimum_height=self.contenedor.setter('height'))
+
+        # Scrollview para la lista de productos
+        self.scrollview = ScrollView()
+        self.scrollview.add_widget(self.contenedor)
+
+        # Agregar los widgets a la interfaz
+        self.add_widget(self.scrollview)
+
+        # Cargar la lista de productos al iniciar
+        self.cargar_productos()
+
+    def cargar_productos(self):
+        self.contenedor.clear_widgets()
+        productos = self.data.obtener_productos()
+        for producto in productos:
+            item = BoxLayout(orientation="vertical", spacing=10, size_hint=(4, None), height=130)
+            item.add_widget(Label(text="ID: " + str(producto[0])))
+            item.add_widget(Label(text="Nombre: " + producto[1]))
+            item.add_widget(Label(text="Descripcion: " + producto[2]))
+            item.add_widget(Label(text="Precio: " + str(producto[3])))
+            item.add_widget(Label(text="Stock: " + str(producto[4])))
+            item.add_widget(Label())
+            self.contenedor.add_widget(item)
+
+
+class MainApp(App):
+    def build(self):
+        # Crear la ventana principal
+        contenedor_01 = Contenedor_01()
+
+        # Crear la ventana secundaria
+        lista_productos = ListaProductos()
+
+        # Crear botón para abrir la ventana secundaria
+        btn_ver_productos = Button(text="Ver Productos", on_release=self.abrir_ventana_productos)
+
+        # Agregar el botón a la ventana principal
+        contenedor_01.add_widget(btn_ver_productos)
+
+        return contenedor_01
+
+    def abrir_ventana_productos(self, *args):
+        # Crear la ventana secundaria y mostrarla
+        lista_productos = ListaProductos()
+        popup = Popup(title="Lista de Productos", content=lista_productos, size_hint=(0.8, 0.8))
+        popup.open()
 
 if __name__ == '__main__':
     MainApp().run()
