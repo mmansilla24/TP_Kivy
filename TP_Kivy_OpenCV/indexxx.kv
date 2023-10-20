@@ -1,0 +1,88 @@
+<IndexScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '10dp'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: '10dp'
+
+            MDRaisedButton:
+                text: 'Login'
+                size_hint: None, None
+                size: (150, 50)
+                theme_text_color: 'Secondary'
+                on_release: app.root.current = 'login'
+
+            MDRaisedButton:
+                text: 'Nuevo Usuario'
+                size_hint: None, None
+                size: (150, 50)
+                theme_text_color: 'Secondary'
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '20dp'
+
+            MDLabel:
+                text: "Index"
+                font_size: 24
+                theme_text_color: "Secondary"
+
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: '10dp'
+                padding: '20dp'
+
+                MDRaisedButton:
+                    text: "Files"
+                    size_hint: (None, None)
+                    size: (150, 50)
+                    theme_text_color: 'Secondary'
+                    on_release: app.root.current = 'files'
+
+                MDRaisedButton:
+                    text: "Camera"
+                    size_hint: (None, None)
+                    size: (150, 50)
+                    theme_text_color: 'Secondary'
+                    on_release: app.root.current = 'camera'
+<CameraScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDLabel:
+            text: "Cámara"
+            font_size: 24
+            theme_text_color: "Secondary"
+
+        VideoPlayer:
+            source: "your_video.mp4"
+
+        MDRaisedButton:
+            text: "<- Atrás"
+            size_hint: (None, None)
+            size: (150, 50)
+            theme_text_color: 'Secondary'
+            on_release: app.root.current = 'index'
+
+<FileScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDFileManager:
+            id: file_manager
+            path: '.'
+            filters: ['*.jpg', '*.png', '*.mp4']
+
+        BoxLayout:
+            orientation: 'vertical'
+            id: media_widget
+
+        MDRaisedButton:
+            text: "<- Atrás"
+            size_hint: (None, None)
+            size: (150, 50)
+            theme_text_color: 'Secondary'
+            on_release: app.root.current = 'index'
