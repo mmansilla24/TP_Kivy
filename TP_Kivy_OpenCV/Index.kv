@@ -1,0 +1,97 @@
+<LoginScreen23>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0.2, 0.2, 0.2, 1  # Cambia el color de fondo del layout principal
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+
+            Button:
+                text: 'Login'
+                size_hint: None, None
+                size: 150, 50
+                background_color: 0, 0.7, 0.7, 1  # Cambia el color de fondo del botón
+                font_size: 20
+                on_press: root.capture_validate_image(self)
+
+            Button:
+                text: 'Nuevo Usuario'
+                size_hint: None, None
+                size: 150, 50
+                background_color: 0, 0.7, 0.7, 1
+                font_size: 20
+                on_press: root.create_user(self)
+
+
+ScreenManager:
+    IndexScreen:
+        name: "index"
+    # CameraScreen:
+    #     name: "camera"  # Ya no es necesario agregar CameraScreen aquí
+    FileScreen:
+        name: "files"
+
+<IndexScreeen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+
+        Label:
+            text: "Index"
+            font_size: 24
+            color: 1, 1, 1, 1  # Cambia el color del texto
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+            padding: [20, 20, 20, 20]
+
+            Button:
+                text: "Files"
+                size_hint: (None, None)
+                size: (150, 50)
+                background_color: 0, 0.7, 0.7, 1
+                on_press: root.go_to_files()
+
+            Button:
+                text: "Camera"
+                size_hint: (None, None)
+                size: (150, 50)
+                background_color: 0, 0.7, 0.7, 1
+                on_press: root.go_to_camera()
+
+<FileScreenn>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0.2, 0.2, 0.2, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        FileChooserListView:
+            id: file_chooser
+            path: '.'
+            filters: ['*.jpg', '*.png', '*.mp4']
+
+        BoxLayout:
+            orientation: 'vertical'
+            id: media_widget
+
+        Button:
+            text: "<- Atras"
+            size_hint: (None, None)
+            size: (150, 50)
+            background_color: 0, 0.7, 0.7, 1
+            on_press: root.go_to_index()
